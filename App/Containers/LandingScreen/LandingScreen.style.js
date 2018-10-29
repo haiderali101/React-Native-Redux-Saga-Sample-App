@@ -40,9 +40,14 @@ export default StyleSheet.create({
     color: 'white',
     fontFamily: 'Arial-BoldMT',
   },
-  flatList: {
-    width: width,
+  flatListContainer: {
+    width: '100%',
+    flex: 1,
     padding: 20,
+  },
+  flatList: {
+    width: '100%',
+    flex: 1,
   },
   flatListItem: {
     flex: 1,

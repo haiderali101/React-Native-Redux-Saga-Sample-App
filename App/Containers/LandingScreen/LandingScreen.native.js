@@ -126,14 +126,17 @@ class LandingScreen extends React.PureComponent {
     const foodListResponse = _.get(this.props.foodListResponse, 'foodListData.Items', [])
 
     return (
-      <FlatList
-        removeClippedSubviews={false}
-        style={styles.flatList}
-        data={foodListResponse}
-        extraData={this.props}
-        renderItem={this.renderRow}
-        keyExtractor={(item, index) => item.foodId}
-      />
+      <View style={styles.flatListContainer}>
+        <FlatList
+          removeClippedSubviews={false}
+          style={styles.flatList}
+          ContentContainerStyle={{paddingBottom: 10}}
+          data={foodListResponse}
+          extraData={this.props}
+          renderItem={this.renderRow}
+          keyExtractor={(item, index) => item.foodId}
+        />
+      </View>
     )
   }
 
@@ -168,7 +171,7 @@ class LandingScreen extends React.PureComponent {
     let alphabetRejex = /^[a-zA-Z\s]*$/
     const { foodName } = this.state
 
-    if (!alphabetRejex.test(foodName)) {
+    if (!alphabetRejex.test(foodName) || foodName == '') {
       alert('Invalid Food Name, You can only use Alphabets.')
       return
     }
