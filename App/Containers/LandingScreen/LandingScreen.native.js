@@ -123,14 +123,18 @@ class LandingScreen extends React.PureComponent {
   }
 
   _renderFoodList = () => {
-    const foodListResponse = _.get(this.props.foodListResponse, 'foodListData.Items', [])
+    const foodListResponse = _.get(
+      JSON.parse(this.props.foodListResponse.foodListData),
+      'Items',
+      [],
+    )
 
     return (
       <View style={styles.flatListContainer}>
         <FlatList
           removeClippedSubviews={false}
           style={styles.flatList}
-          ContentContainerStyle={{paddingBottom: 10}}
+          ContentContainerStyle={{ paddingBottom: 10 }}
           data={foodListResponse}
           extraData={this.props}
           renderItem={this.renderRow}
