@@ -151,8 +151,18 @@ class LandingScreen extends React.PureComponent {
       )
     } else if (!this.state.showLoader) {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={styles.nothingText}>Nothing Here. Plese Enter Some Food Items</Text>
+        <View style={styles.nothingTextContainer}>
+          <Text style={styles.nothingText}>Nothing Here.</Text>
+          <Text style={styles.nothingText}>Plese enter some food items or</Text>
+          <TouchableOpacity
+            style={styles.tryAgainButton}
+            onPress={() => {
+              this.setState({ showLoader: true }, () => {
+                this.fetchDataOnRefresh()
+              })
+            }}>
+            <Text style={[styles.nothingText, styles.whiteColorText]}>Try Again</Text>
+          </TouchableOpacity>
         </View>
       )
     }

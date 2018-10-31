@@ -65,7 +65,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   deleteItemContainer: {
-    flex: 1 / 4,
+    flex: 1 / 6,
     alignSelf: 'center',
   },
   listHeader: {
@@ -80,10 +80,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     height: height,
   },
+  nothingTextContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   nothingText: {
     fontFamily: 'Arial-BoldMT',
   },
   contentStyle: {
     paddingBottom: 10,
+  },
+  tryAgainButton: {
+    backgroundColor: 'rgb(48, 117, 255)',
+    padding: 5,
+  },
+  whiteColorText: {
+    color: 'white',
   },
 })
