@@ -26,6 +26,7 @@ class LandingScreen extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
+      dataSource: [],
       foodName: '',
       showLoader: true,
     }
@@ -123,11 +124,7 @@ class LandingScreen extends React.PureComponent {
   }
 
   _renderFoodList = () => {
-    const foodListResponse = _.get(
-      JSON.parse(this.props.foodListResponse.foodListData),
-      'Items',
-      [],
-    )
+    const foodListResponse = _.get(this.props.foodListResponse, 'foodListData.Items', [])
 
     return (
       <View style={styles.flatListContainer}>
