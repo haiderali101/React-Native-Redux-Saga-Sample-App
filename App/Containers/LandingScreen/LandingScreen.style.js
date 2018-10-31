@@ -80,4 +80,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     height: height,
   },
+  nothingText: {
+    fontFamily: 'Arial-BoldMT',
+  },
 })

@@ -48,10 +48,9 @@ class LandingScreen extends React.PureComponent {
     const foodList = _.get(foodListResponse, 'foodListData.Items', [])
 
     if (this.foodListCheck) {
-      if (!foodListIsFetching && foodListError == null && _.size(foodList) > 0) {
-        this.setState({ showLoader: false, dataSource: foodList })
+      if (!foodListIsFetching && foodListError == null && foodListResponse.foodListData != null) {
+        this.setState({ showLoader: false, dataSource: foodListNew })
         this.foodListCheck = false
-        console.log(foodList)
       }
     }
 
@@ -126,19 +125,27 @@ class LandingScreen extends React.PureComponent {
   }
 
   _renderFoodList = () => {
-    return (
-      <View style={styles.flatListContainer}>
-        <FlatList
-          removeClippedSubviews={false}
-          style={styles.flatList}
-          ContentContainerStyle={{ paddingBottom: 10 }}
-          data={this.state.dataSource}
-          extraData={this.props}
-          renderItem={this.renderRow}
-          keyExtractor={(item, index) => item.foodId}
-        />
-      </View>
-    )
+    if (_.size(this.state.dataSource) > 0) {
+      return (
+        <View style={styles.flatListContainer}>
+          <FlatList
+            removeClippedSubviews={false}
+            style={styles.flatList}
+            ContentContainerStyle={{ paddingBottom: 10 }}
+            data={this.state.dataSource}
+            extraData={this.props}
+            renderItem={this.renderRow}
+            keyExtractor={(item, index) => item.foodId}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={styles.nothingText}>Nothing Here. Plese Enter Some Food Items</Text>
+        </View>
+      )
+    }
   }
 
   _renderActivityIndicator = () => {
