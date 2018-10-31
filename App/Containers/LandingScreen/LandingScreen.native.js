@@ -45,11 +45,13 @@ class LandingScreen extends React.PureComponent {
     const foodListResponse = nextProps.foodListResponse
     const foodListError = _.get(foodListResponse, 'foodListData.error', null)
     const foodListIsFetching = _.get(foodListResponse, 'foodListData.isFetching', false)
+    const foodList = _.get(foodListResponse, 'foodListData.Items', [])
 
     if (this.foodListCheck) {
-      if (!foodListIsFetching && foodListError == null) {
-        this.setState({ showLoader: false })
+      if (!foodListIsFetching && foodListError == null && _.size(foodList) > 0) {
+        this.setState({ showLoader: false, dataSource: foodList })
         this.foodListCheck = false
+        console.log(foodList)
       }
     }
 
@@ -124,15 +126,13 @@ class LandingScreen extends React.PureComponent {
   }
 
   _renderFoodList = () => {
-    const foodListResponse = _.get(this.props.foodListResponse, 'foodListData.Items', [])
-
     return (
       <View style={styles.flatListContainer}>
         <FlatList
           removeClippedSubviews={false}
           style={styles.flatList}
           ContentContainerStyle={{ paddingBottom: 10 }}
-          data={foodListResponse}
+          data={this.state.dataSource}
           extraData={this.props}
           renderItem={this.renderRow}
           keyExtractor={(item, index) => item.foodId}
