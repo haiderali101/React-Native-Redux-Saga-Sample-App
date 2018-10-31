@@ -29,6 +29,7 @@ class LandingScreen extends React.PureComponent {
       dataSource: [],
       foodName: '',
       showLoader: true,
+      refreshing: false,
     }
     this.deleteItemCheck = false
     this.createItemCheck = false
@@ -42,14 +43,14 @@ class LandingScreen extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const foodListResponse = nextProps.foodListResponse
+    const { foodListResponse } = nextProps
     const foodListError = _.get(foodListResponse, 'foodListData.error', null)
     const foodListIsFetching = _.get(foodListResponse, 'foodListData.isFetching', false)
     const foodList = _.get(foodListResponse, 'foodListData.Items', [])
 
     if (this.foodListCheck) {
       if (!foodListIsFetching && foodListError == null && foodListResponse.foodListData != null) {
-        this.setState({ showLoader: false, dataSource: foodListNew })
+        this.setState({ showLoader: false, dataSource: foodList, refreshing: false })
         this.foodListCheck = false
       }
     }
@@ -125,21 +126,30 @@ class LandingScreen extends React.PureComponent {
   }
 
   _renderFoodList = () => {
+    const { foodListResponse } = this.props
+    const foodListIsFetching = _.get(foodListResponse, 'foodListData.isFetching', false)
+
     if (_.size(this.state.dataSource) > 0) {
       return (
         <View style={styles.flatListContainer}>
           <FlatList
             removeClippedSubviews={false}
             style={styles.flatList}
-            ContentContainerStyle={{ paddingBottom: 10 }}
+            ContentContainerStyle={styles.contentStyle}
             data={this.state.dataSource}
             extraData={this.props}
             renderItem={this.renderRow}
             keyExtractor={(item, index) => item.foodId}
+            onRefresh={() => {
+              if (!foodListIsFetching) {
+                this.fetchDataOnRefresh()
+              }
+            }}
+            refreshing={this.state.refreshing}
           />
         </View>
       )
-    } else {
+    } else if (!this.state.showLoader) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
           <Text style={styles.nothingText}>Nothing Here. Plese Enter Some Food Items</Text>
@@ -192,6 +202,13 @@ class LandingScreen extends React.PureComponent {
       dateCreated: moment(new Date()).format('DD/MM/YYYY'),
     }
     this.props.createFoodItem(payload)
+  }
+
+  fetchDataOnRefresh = () => {
+    this.setState({ refreshing: true }, () => {
+      this.foodListCheck = true
+      this.props.getFoodList()
+    })
   }
 }
 

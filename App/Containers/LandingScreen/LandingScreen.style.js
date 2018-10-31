@@ -83,4 +83,7 @@ export default StyleSheet.create({
   nothingText: {
     fontFamily: 'Arial-BoldMT',
   },
+  contentStyle: {
+    paddingBottom: 10,
+  },
 })
